@@ -1,0 +1,160 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .trans {
+    @apply transition duration-150 ease-in-out
+  }
+
+  .disabledBtn {
+    @apply saturate-0 pointer-events-none brightness-[.80]
+  }
+}
+
+.colorGradient {
+  background: -webkit-linear-gradient(right, #d19cf4, #549ffb );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  
+
+  
+}
+
+
+
+
+
+.ridScrollbar {
+  -ms-overflow-style: none;
+  /* Internet Explorer 10+ */
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+.ridScrollbar::-webkit-scrollbar {
+  display: none;
+  /* Safari and Chrome */
+}
+
+@keyframes example {
+  from {
+    transform: rotate3d(1, 1, 1, 45deg);
+  }
+  to {
+    transform: rotate3d(1, 1, 1, 25deg);
+  }
+}
+
+.rotateIT {
+  animation: example 4s ease-in-out infinite alternate;
+}
+
+
+  /* Firefox (uncomment to work in Firefox, although other properties will not work!)  */
+  /** {
+  scrollbar-width: thin;
+  scrollbar-color: #717171 #DFE9EB;
+}*/
+
+  /* Chrome, Edge and Safari */
+  .simpleScroll::-webkit-scrollbar {
+    height: 10px;
+    width: 10px;
+  }
+
+  .simpleScroll::-webkit-scrollbar-thumb {
+    border-radius: 16px;
+    background-color: #475569;
+  }
+
+
+
+ 
+
+.loader {
+  border: 6px solid #ffffff3c;
+  border-bottom-color: #A78BFA;
+  border-radius: 50%;
+  display: inline-block;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+}
+
+.movingGradient {
+  background-size: 400% 400%;
+	animation: gradient 15s ease infinite;
+}
+
+@keyframes gradient {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
+
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@font-face {
+  font-family: "satoshi";
+  src: url("/Satoshi_Complete/Satoshi_Complete/Fonts/OTF/Satoshi-Regular.otf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "satoshi";
+  src: url("/Satoshi_Complete/Satoshi_Complete/Fonts/OTF/Satoshi-Italic.otf") format("truetype");
+  font-weight: normal;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "satoshi";
+  src: url("/Satoshi_Complete/Satoshi_Complete/Fonts/OTF/Satoshi-Black.otf") format("truetype");
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "satoshi";
+  src: url("/Satoshi_Complete/Satoshi_Complete/Fonts/OTF/Satoshi-Bold.otf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "satoshi";
+  src: url("/Satoshi_Complete/Satoshi_Complete/Fonts/OTF/Satoshi-Medium.otf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "satoshi";
+  src: url("/Satoshi_Complete/Satoshi_Complete/Fonts/OTF/Satoshi-BlackItalic.otf") format("truetype");
+  font-weight: bold;
+  font-style: italic;
+}
+
+* {
+  font-family: 'satoshi';
+}
+
+@layer components {}
+
+@layer utilities {}
