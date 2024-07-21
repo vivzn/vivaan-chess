@@ -11,7 +11,7 @@ import { nanoid } from "nanoid";
 import Loading from "@/components/loading";
 import Error from "@/components/error";
 import { ArrowDownIcon, ArrowsPointingOutIcon, ArrowsUpDownIcon, ChatBubbleOvalLeftIcon, CheckIcon, FlagIcon, PaperClipIcon, XCircleIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import { Bars3BottomLeftIcon, BoltIcon, BoltSlashIcon, FlagIcon as FlagIconSolid, SpeakerWaveIcon, WrenchScrewdriverIcon } from "@heroicons/react/24/solid";
+import { Bars3BottomLeftIcon, BoltIcon, BoltSlashIcon, FlagIcon as FlagIconSolid, SpeakerWaveIcon, TrophyIcon, WrenchScrewdriverIcon } from "@heroicons/react/24/solid";
 import Tippy from "@tippyjs/react";
 import MyCustomTip from "@/components/mycustomtip";
 import useSWR from "swr";
@@ -35,6 +35,7 @@ export default function Game() {
   const [playerState, setPlayerState] = useState<playerEnum>(playerEnum.Loader);
   const [user, setUser] = useContext<any>(RootContext).user;
   const [opponent, setOpponent] = useState<any>();
+  const [opponentU, setOpponentU] = useState<any>();
   const [msg, setMsg] = useState<any>("");
   const [msgList, setMsgList] = useState<any>([])
 
@@ -72,6 +73,12 @@ export default function Game() {
               setOpponent(data?.data)
             } else {
 
+            }
+          })
+          axios.post('/api/get-user', { email: data?.data?.members.find((member: any) => member.user !== opponentUser).user }).then((data: any) => {
+            if (data?.data) {
+              setOpponentU(data?.data)
+              // console.log("KNIGGA", data?.data)
             }
           })
         }
@@ -331,7 +338,10 @@ export default function Game() {
     await axios.post('/api/msg', { text, roomId, channel })
   }
   const dropPiece = async (from: string, to: string, piece: undefined | null | string) => {
-    if (playerState !== playerEnum.PlayerW && playerState !== playerEnum.PlayerB) return false;
+    if (playerState !== playerEnum.PlayerW && playerState !== playerEnum.PlayerB) {
+      toast.error("You are not one of the players")
+      return false;
+    };
     if (piece && piece[0] !== (playerState == playerEnum.PlayerW ? "w" : "b")) return false;
 
     const gameCopyable = game?.main;
@@ -392,8 +402,8 @@ export default function Game() {
     const blackIs = data?.data?.members?.filter((member: any) => member.side == "b")[0].user;
     const whiteIs = data?.data?.members?.filter((member: any) => member.side == "w")[0].user;
 
-    
-    const iduje= toast.loading("changing players trophies");
+
+    const iduje = toast.loading("changing players trophies");
 
     axios.post('/api/update-user', {
       email: whiteIs, increment: whiteGets
@@ -524,7 +534,7 @@ export default function Game() {
 
   return (
     <div className="w-full h-screen flex flex-grow-[1]">
-     
+
       {showScroll && <div id="scroller" className="w-8 h-8 rounded-full bottom-0 bg-white z-[10] grid place-content-center absolute ml-4 mb-2 shadow-2xl animate-bounce">
         <ArrowDownIcon className="w-5 h-5 stroke-[3] text-violet-400" />
 
@@ -614,7 +624,7 @@ export default function Game() {
 
 
             <div className="w-full h-full flex items-center border-r-2 border-white/5 justify-center space-x-4 p-4">
-              {data?.data?.gameStatus == "playing" || data?.data?.gameStatus == "finished" ? <>
+              {(data?.data?.gameStatus == "playing" || data?.data?.gameStatus == "finished") && playerState !== playerEnum.Spectator ? <>
                 {data?.data?.gameStatus == "playing" && <Tippy content={<MyCustomTip text={"resign"} />}>
                   <div onClick={async () => {
                     let yesOrNo = window.confirm("Are you sure you want to resign?")
@@ -680,116 +690,161 @@ export default function Game() {
                 )}
 
               </> : (
+
                 <>
-                  <WaitForRival />
+                  {playerState == playerEnum.Spectator ? <div className="px-4 p-2 bg-red-500 rounded-full text-white font-bold">you are spectating</div> : <WaitForRival />}
+
+                    
+                  </>
+               
+              )}
+                </div>
+              <div className="w-full p-4 pt-0 border-r-2 border-white/5">
+                <div className="w-full h-full max-h-full flex flex-col flex-grow-[1] p-4 space-y-4 border-2 border-white/5 rounded-xl">  <div className="w-full h-fit flex-grow-[1] rounded-full flex space-x-4 p-3 placeholder:font-semibold font-semibold bg-slate-600"> <ChatBubbleOvalLeftIcon className="w-6 h-6 stroke-[2.5] text-slate-300" /> <form className="w-full" onSubmit={submitMsg}> <input onChange={(e) => setMsg(e?.target.value)} value={msg} className="bg-transparent focus:outline-none outline-none text-white w-full h-full" placeholder="game chat" /> </form> </div> <div className="w-full h-[150px] overflow-y-scroll simpleScroll space-y-2"> {msgList && msgList.map((msg: any, index: any) => (<div key={index} className="space-x-[8px] w-full h-fit"> <span className="font-semibold text-white">{msg?.user}:</span> <span className="font-semibold text-slate-400">{msg?.text}</span> </div>))} </div> </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div className="w-[39%] h-full bg-slate-700">
+          <div className="w-full h-[39%] border-b-2  border-white/5 flex flex-col flex-grow-[1]">
+            <div className="p-4 flex w-full justify-center bg-slate-700 border-white/5 border-b-2">
+              {(playerState == playerEnum.PlayerB || playerState == playerEnum.PlayerW) && <div className="text-white font-bold flex space-x-4 items-center">
+                <div className={`w-5 h-5 rounded-[4px] ${playerState == playerEnum.PlayerW ? "bg-white" : "bg-black"}`}>
+                </div>
+                <span className="text-white">you {playerState == playerEnum.PlayerW ? "play white" : "play black"}</span>
+
+              </div>}
+            </div>
+            <div className="w-full h-full flex flex-col">
+              {data?.data?.gameStatus == "waiting" ? <div className="w-full h-full grid place-content-center p-4">
+                <WaitForRival />
+              </div> : (
+                <>
+                  {playerState == playerEnum.Spectator ? <>
+                    <div className="w-full h-full flex items-center justify-center flex-col space-y-4 items-center">
+                      <div className="flex space-x-4 items-center">
+
+                        <fieldset className="flex space-x-4 items-center bg-slate-600 p-3 rounded-xl">
+                          <legend className="font-bold text-slate-200">{data?.data?.members.find((u: any) => u.user === opponent?.email)?.side == "w" ? "play White" : "play Black"}</legend>
+                          <Image className="rounded-full" src={opponent?.photoURL} width={40} height={40} alt="" />
+                          <div className="flex flex-col">
+
+                            <span className="font-bold text-slate-300">{opponent?.name}</span>
+                            <span className="font-bolt text-violet-300 font-bold flex space-x-2 items-center">
+                              <TrophyIcon className="w-4 h-4" />
+                              <span>{opponent?.elo}</span>
+                            </span>
+
+                          </div>
+                        </fieldset>
+
+                        <span className="font-bold text-slate-400">vs</span>
+
+                        <fieldset className="flex space-x-4 items-center bg-slate-600 p-3 rounded-xl">
+                          <legend className="font-bold text-slate-200">{data?.data?.members.find((u: any) => u.user === opponentU?.email)?.side == "w" ? "play White" : "play Black"}</legend>
+                          <Image className="rounded-full" src={opponentU?.photoURL} width={40} height={40} alt="" />
+                          <div className="flex flex-col">
+
+                            <span className="font-bold text-slate-300">{opponentU?.name}</span>
+                            <span className="font-bolt text-violet-300 font-bold flex space-x-2 items-center">
+                              <TrophyIcon className="w-4 h-4" />
+                              <span>{opponentU?.elo}</span>
+                            </span>
+
+                          </div>
+                        </fieldset>
+
+                      </div>
+                      <div className="px-4 p-2 bg-red-500 rounded-full text-white font-bold">you are spectating</div>
+
+                    </div></> : (
+                    <div className="flex flex-col w-full h-full">
+                      <div className="flex w-full h-full items-center justify-center space-x-4 p-4 border-white/5  bg-slate-800">
+                        {/* <span className="font-bold text-slate-200">playing</span> */}
+
+
+
+                        <fieldset className="flex translate-y-[-7px] items-center gap-4 p-4 pt-2 rounded-xl bg-slate-700">
+                          <legend className="font-bold text-white">playing</legend>
+                          <div className="absolute translate-x-[-30px] translate-y-[-46px] text-bold items-center text-violet-400 space-x-2 flex">
+                            <BoltIcon className="w-7 h-7 text-violet-400" />
+
+                          </div>
+                          <Image alt="opponent" width={50} className="rounded-full border-slate-white/5" height={50} src={opponent?.photoURL} />
+                          <div className="flex flex-col space-y-1">
+
+                            <span className="text-slate-300 font-bold leading-4 flex space-x-4"><span className="text-violet-300">{opponent?.elo}</span><span>{opponent?.name?.toLowerCase()}</span></span>
+                            <span className="text-slate-500 font-semibold">{opponent?.email}</span>
+
+                          </div>
+                        </fieldset>
+                      </div>
+
+                    </div>
+                  )}
                 </>
               )}
+
             </div>
-            <div className="w-full p-4 pt-0 border-r-2 border-white/5">
-              <div className="w-full h-full max-h-full flex flex-col flex-grow-[1] p-4 space-y-4 border-2 border-white/5 rounded-xl">  <div className="w-full h-fit flex-grow-[1] rounded-full flex space-x-4 p-3 placeholder:font-semibold font-semibold bg-slate-600"> <ChatBubbleOvalLeftIcon className="w-6 h-6 stroke-[2.5] text-slate-300" /> <form className="w-full" onSubmit={submitMsg}> <input onChange={(e) => setMsg(e?.target.value)} value={msg} className="bg-transparent focus:outline-none outline-none text-white w-full h-full" placeholder="game chat" /> </form> </div> <div className="w-full h-[150px] overflow-y-scroll simpleScroll space-y-2"> {msgList && msgList.map((msg: any, index: any) => (<div key={index} className="space-x-[8px] w-full h-fit"> <span className="font-semibold text-white">{msg?.user}:</span> <span className="font-semibold text-slate-400">{msg?.text}</span> </div>))} </div> </div>
-            </div>
+
+
           </div>
+          <div className="w-full h-[61%] flex">
 
-        </div>
-      </div>
-      <div className="w-[39%] h-full bg-slate-700">
-        <div className="w-full h-[39%] border-b-2  border-white/5 flex flex-col flex-grow-[1]">
-          <div className="p-4 flex w-full justify-center bg-slate-700 border-white/5 border-b-2">
-            {(playerState == playerEnum.PlayerB || playerState == playerEnum.PlayerW) && <div className="text-white font-bold flex space-x-4 items-center">
-              <div className={`w-5 h-5 rounded-[4px] ${playerState == playerEnum.PlayerW ? "bg-white" : "bg-black"}`}>
-              </div>
-              <span className="text-white">you {playerState == playerEnum.PlayerW ? "play white" : "play black"}</span>
+            <div className="w-[100%] h-full border-white/5 border-r-2 p-4">
+              <div className="w-full h-full simpleScroll space-y-2 overflow-y-scroll simpleScroll">
+                {(moveList?.map((txt: any, index: any) => {
 
-            </div>}
-          </div>
-          <div className="w-full h-full flex flex-col">
-            {data?.data?.gameStatus == "waiting" ? <div className="w-full h-full grid place-content-center p-4">
-              <WaitForRival />
-            </div> : (
-              <div className="flex flex-col w-full h-full">
-                <div className="flex w-full h-full items-center justify-center space-x-4 p-4 border-white/5  bg-slate-800">
-                  {/* <span className="font-bold text-slate-200">playing</span> */}
+                  return <div key={index} className="font-semibold">{((index + 1 + 1) % 2 == 0) && (
+                    <div className={`w-full h-fit px-[8x] space-x-3 p-[8px] leading-3 flex flex-grow-[1] items-center rounded-full`}>
+                      <div className="text-[13px] text-slate-400">{(index + 2) / 2}.</div>
+                      <div className="h-full w-full space-x-2 pr-2 flex font-semibold">
+                        {txt && <div key={txt?.san} className="w-[50%] min-w-[50%] max-w-[50%] bg-white/3 h-[20px] flex items-center px-[8px] space-x-1 text-slate-300 border-l-px] border-slate-400/20">
+                          {determinePiece(txt?.piece, txt?.color)}
+                          <span className="text-[16px]">{txt?.san?.toLowerCase()}</span>
+                        </div>}
 
 
 
-                  <fieldset className="flex translate-y-[-7px] items-center gap-4 p-4 pt-2 rounded-xl bg-slate-700">
-                    <legend className="font-bold text-white">playing</legend>
-                    <div className="absolute translate-x-[-30px] translate-y-[-46px] text-bold items-center text-violet-400 space-x-2 flex">
-                      <BoltIcon className="w-7 h-7 text-violet-400" />
 
+                        {((moveList && moveList[index + 1]) && <div key={moveList[index + 1]?.san} className="w-[50%] min-w-[50%] max-w-[50%] bg-white/3 h-[20px] flex items-center px-[8px] space-x-1 text-slate-300 border-l-px] border-slate-white/5">
+                          {determinePiece(moveList[index + 1]?.piece, moveList[index + 1]?.color)}
+                          <span className="" style={{ fontSize: "16" + "px" }}>{(moveList[index + 1]?.san?.toLowerCase())}</span>
+                        </div>)}
+
+
+
+                      </div>
                     </div>
-                    <Image alt="opponent" width={50} className="rounded-full border-slate-white/5" height={50} src={opponent?.photoURL} />
-                    <div className="flex flex-col space-y-1">
-
-                      <span className="text-slate-300 font-bold leading-4 flex space-x-4"><span className="text-violet-300">{opponent?.elo}</span><span>{opponent?.name?.toLowerCase()}</span></span>
-                      <span className="text-slate-500 font-semibold">{opponent?.email}</span>
-
-                    </div>
-                  </fieldset>
-                </div>
-
-              </div>
-            )}
-
-          </div>
+                  )}</div>
+                }))}
 
 
-        </div>
-        <div className="w-full h-[61%] flex">
-
-          <div className="w-[100%] h-full border-white/5 border-r-2 p-4">
-            <div className="w-full h-full simpleScroll space-y-2 overflow-y-scroll simpleScroll">
-              {(moveList?.map((txt: any, index: any) => {
-
-                return <div key={index} className="font-semibold">{((index + 1 + 1) % 2 == 0) && (
+                {moveList?.length == 0 && (
                   <div className={`w-full h-fit px-[8x] space-x-3 p-[8px] leading-3 flex flex-grow-[1] items-center rounded-full`}>
-                    <div className="text-[13px] text-slate-400">{(index + 2) / 2}.</div>
+                    <div className="text-[13px] text-slate-400">1.</div>
                     <div className="h-full w-full space-x-2 pr-2 flex font-semibold">
-                      {txt && <div key={txt?.san} className="w-[50%] min-w-[50%] max-w-[50%] bg-white/3 h-[20px] flex items-center px-[8px] space-x-1 text-slate-300 border-l-px] border-slate-400/20">
-                        {determinePiece(txt?.piece, txt?.color)}
-                        <span className="text-[16px]">{txt?.san?.toLowerCase()}</span>
-                      </div>}
+                      <div className="w-[100%] min-w-[100%] max-w-[100%] h-[20px] flex items-center text-slate-300">
+
+                        <span>not played</span>
 
 
-
-
-                      {((moveList && moveList[index + 1]) && <div key={moveList[index + 1]?.san} className="w-[50%] min-w-[50%] max-w-[50%] bg-white/3 h-[20px] flex items-center px-[8px] space-x-1 text-slate-300 border-l-px] border-slate-white/5">
-                        {determinePiece(moveList[index + 1]?.piece, moveList[index + 1]?.color)}
-                        <span className="" style={{ fontSize: "16" + "px" }}>{(moveList[index + 1]?.san?.toLowerCase())}</span>
-                      </div>)}
-
-
-
+                      </div>
                     </div>
-                  </div>
-                )}</div>
-              }))}
+                  </div>)
 
 
-              {moveList?.length == 0 && (
-                <div className={`w-full h-fit px-[8x] space-x-3 p-[8px] leading-3 flex flex-grow-[1] items-center rounded-full`}>
-                  <div className="text-[13px] text-slate-400">1.</div>
-                  <div className="h-full w-full space-x-2 pr-2 flex font-semibold">
-                    <div className="w-[100%] min-w-[100%] max-w-[100%] h-[20px] flex items-center text-slate-300">
+                }
 
-                      <span>not played</span>
-
-
-                    </div>
-                  </div>
-                </div>)
-
-
-              }
-
+              </div>
             </div>
+
           </div>
 
         </div>
 
+
       </div>
-
-
-    </div>
-  );
+      );
 }
