@@ -4,7 +4,11 @@ Built with MERN Stack + Pusher + Firebase Auth
 
 Created for the following hackathon:
 
-- STEMist 2024 Hackathon
+- STEMist 2024
+- MoonCorp 2024 - Winner 2nd place
+- HackCSB 2024
+- SummerHacks 2024
+- Star Hacks 2024
 
 ![land](https://github.com/user-attachments/assets/b7bcb89f-e11c-46a0-a417-ebd763c8152e)
 ![2](https://github.com/user-attachments/assets/f5acad32-d8d5-4232-8614-71498de59dfa)
