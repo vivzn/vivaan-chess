@@ -5,7 +5,6 @@ Built with MERN Stack + Pusher + Firebase Auth
 Created for the following hackathon:
 
 - STEMist 2024
-- MoonCorp 2024 - Winner 2nd place
 - HackCSB 2024
 - SummerHacks 2024
 - Star Hacks 2024
