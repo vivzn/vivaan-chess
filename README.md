@@ -2,12 +2,6 @@ All in one in Chess Multiplayer App
 
 Built with MERN Stack + Pusher + Firebase Auth
 
-Created for the following hackathon:
-
-- STEMist 2024
-- HackCSB 2024
-- SummerHacks 2024
-- Star Hacks 2024
 
 ![land](https://github.com/user-attachments/assets/b7bcb89f-e11c-46a0-a417-ebd763c8152e)
 ![2](https://github.com/user-attachments/assets/f5acad32-d8d5-4232-8614-71498de59dfa)
