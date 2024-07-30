@@ -1,5 +1,7 @@
 All in one in Chess Multiplayer App 
 
+APEERS Solstice Hack
+
 Built with MERN Stack + Pusher + Firebase Auth
 
 
