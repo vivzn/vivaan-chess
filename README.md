@@ -3,7 +3,7 @@ All in one in Chess Multiplayer App
 Built with MERN Stack + Pusher + Firebase Auth
 
 
-![land](https://github.com/user-attachments/assets/b7bcb89f-e11c-46a0-a417-ebd763c8152e)
+![image](https://github.com/user-attachments/assets/b47a84b2-742c-4418-8d4b-606125ce9d67)
 ![2](https://github.com/user-attachments/assets/f5acad32-d8d5-4232-8614-71498de59dfa)
 ![3](https://github.com/user-attachments/assets/02d8fbeb-eefb-4eb7-968f-edd4525867da)
 ![4](https://github.com/user-attachments/assets/a20cfd95-c1a8-43e9-88f5-93aa33691931)
