@@ -1,3 +1,3 @@
 import { createContext } from "react";
 
-export const RootContext = createContext<any>("");
+export const RootContext = createContext<any>("");  //

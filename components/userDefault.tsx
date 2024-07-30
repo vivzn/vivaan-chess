@@ -4,7 +4,7 @@ import { AdjustmentsHorizontalIcon, PencilSquareIcon, TrophyIcon } from '@heroic
 import { useRouter } from 'next/navigation';
 import * as React from 'react';
 
-
+  //
 export default function UserDefault({ user, bg, border }: any) {
     const router = useRouter();
     const [user_, setUser] = React.useContext(RootContext).user;

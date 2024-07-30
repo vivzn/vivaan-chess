@@ -8,7 +8,7 @@ import { BoltIcon, PlayIcon } from "@heroicons/react/24/solid";
 import { Chess } from "chess.js";
 import { toast } from "react-hot-toast";
 import { CpuChipIcon } from "@heroicons/react/24/outline";
-
+  //
 function Page() {
     const lozza: any = useMemo(() => typeof window !== "undefined" && new Worker("/stockfish.js"), []);
     useEffect(() => {

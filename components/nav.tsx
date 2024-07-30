@@ -15,7 +15,7 @@ export function Nav() {
     const router = useRouter();
     const pathname = usePathname();
     const [user, setUser] = React.useContext<any>(RootContext).user;
-
+  //
     const signOut = () => {
         const auth = authFB;
         auth.signOut().then(() => {

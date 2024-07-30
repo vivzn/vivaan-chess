@@ -3,7 +3,7 @@ import connectDB from "@/lib/connectDB"
 import { pusherServer } from "@/pusherConfig"
 import { NextResponse } from "next/server";
 import game from "@/models/Game"
-
+  //
 export async function POST(req: Request) {
     await connectDB();
     const data = await req.json()

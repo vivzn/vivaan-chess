@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 
-
+  //
 const Game = mongoose.Schema(
   {
 

@@ -24,3 +24,4 @@
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "lib/connectDB.js"],
   "exclude": ["node_modules"]
 }
+  //

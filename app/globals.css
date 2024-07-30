@@ -12,10 +12,13 @@
   }
 }
 
+
 .colorGradient {
   background: -webkit-linear-gradient(right, #d19cf4, #549ffb );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  
+
   
 
   

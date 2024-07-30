@@ -50,7 +50,7 @@ export default function Home() {
   useEffect(() => {
     setLoad(false);
   }, [])
-
+  //
   // useEffect(() => {
 
   //   setLoad(false);

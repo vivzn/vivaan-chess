@@ -5,7 +5,7 @@ import { BoltIcon } from '@heroicons/react/24/solid';
 import { Chess } from 'chess.js';
 import { useDebugValue, useEffect, useMemo, useRef, useState } from 'react';
 import { Chessboard } from 'react-chessboard';
-
+  //
 
 export default function Analyze() {
     const [positions, setPositions] = useState<any>();
