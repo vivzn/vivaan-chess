@@ -1,6 +1,6 @@
 All in one in Chess Multiplayer App 
 
-APEERS Solstice Hack
+submitted to mooncorp hackathon 2024 2nd place winner
 
 Built with MERN Stack + Pusher + Firebase Auth
 
