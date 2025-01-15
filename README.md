@@ -1,8 +1,4 @@
-All in one in Chess Multiplayer App 
-
-submitted to mooncorp hackathon 2024 2nd place winner
-
-Built with MERN Stack + Pusher + Firebase Auth
+abcedfji9erjfpk
 
 
 ![image](https://github.com/user-attachments/assets/b47a84b2-742c-4418-8d4b-606125ce9d67)
