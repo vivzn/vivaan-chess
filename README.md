@@ -1,5 +1,4 @@
-abcedfji9erjfpk
-
+yes i am aware the db url is leaked
 
 ![image](https://github.com/user-attachments/assets/b47a84b2-742c-4418-8d4b-606125ce9d67)
 ![2](https://github.com/user-attachments/assets/f5acad32-d8d5-4232-8614-71498de59dfa)
